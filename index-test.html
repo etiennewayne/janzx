@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JanzX</title>
+
+    <script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
+
+</head>
+<body>
+
+    <button onclick="submit()">
+		TEST SUBMIT
+	</button>
+    
+
+    <script>
+
+        function submit(){
+            const apiKey = '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';
+
+            const myChat = {
+                "model": "text-davinci-003",
+                "prompt": "Hello AI.",
+                "max_tokens": 150,
+                "temperature": 0.9,
+                "top_p": 1,
+                "n": 1,
+                "stream": false,
+                "logprobs": null,
+                "stop": [" Human:", " AI:"]
+            };
+			
+
+            axios.post('https://api.openai.com/v1/completions', myChat, {
+                headers: {
+                    'Accept': 'application/json',
+                    "Content-Type": "application/json",
+                    'Authorization': `Bearer ${apiKey}`
+                },
+            }).then(res=>{
+                console.log(res)
+            })
+        }
+    </script>
+</body>
+</html>
