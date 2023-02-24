@@ -8,22 +8,71 @@
 
     <script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
 
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="button.css">
+
 </head>
 <body>
 
-    <button onclick="submit()">
-		TEST SUBMIT
-	</button>
+
+    <div class="container">
+
+        <div class="chat-container">
+            <div class="chat-header">
+                <div class="chat-header-text">
+                    CHAT BOT
+                </div>
+            </div>
+
+            <div id="chat-msg-container">
+                
+            </div>
+
+            <div class="inputGroup">
+                <input type="text" id="msg" name="msg" 
+                    placeholder="Ask me..."
+                    autocomplete="off" onkeydown="">
+                
+            </div>
+
+            <button class="btn" onclick="submit()">
+                <div class="svg-wrapper-1">
+                    <div class="svg-wrapper">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                            <path fill="none" d="M0 0h24v24H0z"></path>
+                            <path fill="currentColor" d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z"></path>
+                        </svg>
+                    </div>
+                </div>
+                <span>Send</span>
+            </button>
+
+        </div>
+       
+    </div>
+    
     
 
     <script>
 
         function submit(){
-            const apiKey = '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';
+            
+            let msgResponse;
+            let chatMsg = document.getElementById('msg')
+            var botDiv = document.createElement('div');
+            var userDiv = document.createElement('div');
+            var chatMsgContainer = document.getElementById('chat-msg-container');
+           
+            botDiv.className = 'ai-response';
+            userDiv.className = 'user-msg';
+
+            //const apiKey = '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';
+            
+            const apiKey = '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';
 
             const myChat = {
                 "model": "text-davinci-003",
-                "prompt": "Hello AI.",
+                "prompt": chatMsg.value,
                 "max_tokens": 150,
                 "temperature": 0.9,
                 "top_p": 1,
@@ -33,6 +82,10 @@
                 "stop": [" Human:", " AI:"]
             };
 			
+            userDiv.innerHTML = chatMsg.value;
+            chatMsgContainer.appendChild(userDiv);
+            chatMsg.value = '';
+
 
             axios.post('https://api.openai.com/v1/completions', myChat, {
                 headers: {
@@ -41,7 +94,11 @@
                     'Authorization': `Bearer ${apiKey}`
                 },
             }).then(res=>{
-                console.log(res)
+                
+                msgResponse = res.data.choices[0].text
+                botDiv.innerHTML = '<b>AI:</b> ' + msgResponse;
+
+                chatMsgContainer.appendChild(botDiv);
             })
         }
     </script>
